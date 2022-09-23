@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <title>測試JavaScript</title>
+            <script>
+                // From App
+                function callJSFromApp(message){
+                    // document.getElementById("testDemo").innerHTML=Date();
+                    document.getElementById("testDemo").innerHTML=message;
+                }
+                
+                function sendMessage(message) {
+                    document.getElementById("appSendString").innerHTML=message;
+                    return "{\"status\":\"success\",\"value\":321}";
+                }
+
+                function dicationaryFromApp(dicationary) {
+                    var sDecodedParam = window.atob(dicationary);
+
+                    var dic = JSON.parse(sDecodedParam);
+                    var token = dic["token"];
+                    
+                    document.getElementById("appSendDict").innerHTML=token;
+                }
+                
+                // To App
+                function jsCalliOS1() {
+                    // 無參數
+                    // postMessage必須帶參數 否則iOS收不到回調，無參數空值如postMessage({})
+                    // window.webkit.messageHandlers.ToApp1.postMessage({})
+                    
+                    // 帶參數
+                    window.webkit.messageHandlers.ToApp1.postMessage(131)
+                }
+
+                function jsCalliOS2() {
+                    // Dictionary
+                    window.webkit.messageHandlers.ToApp2.postMessage({"token":"abboke"})
+                }
+
+                function jsCalliOS3() {
+                    // String
+                    window.webkit.messageHandlers.ToApp3.postMessage("Send message to Swift3")
+                }
+
+            </script>
+    </head>
+    <body>
+        
+        <h1>我的第一個 JavaScript 段落</h1>
+        <p id="testDemo">測試Label段落</p>
+        <button type="button" onclick="jsCalliOS1()">呼叫APP</button>
+        
+        <h1>我的第二個 JavaScript 段落</h1>
+        <p id="appSendString">來自APPString</p>
+        <button type="button" onclick="jsCalliOS2()">呼叫APPString</button>
+
+        <h1>我的第三個 JavaScript 段落</h1>
+        <p id="appSendDict">來自APPDict</p>
+        <button type="button" onclick="jsCalliOS3()">呼叫APPDict</button>
+
+        <br>
+        <br>
+
+        <a href="job1111://www.1111.com.tw/deeplink?ajbl=A02_P02-月薪4萬" target="_blank" title="DeepLink - job1111方式">DeepLink - job1111方式</a>
+
+
+        <br>
+        <br>
+
+        <a href="job1111://www.1111.com.tw/deeplink?ajbl=A02_P02-月薪4萬" target="_blank" title="DeepLink - MailLink方式">DeepLink - MailLink方式</a>
+
+        <br>
+        <br>
+
+        <a href="https://www.1111.com.tw/MailLink/LinkT.asp?ajbl=A01_15_P01-9565124&Page=A01_15_P01&oNo=9565124&eNo=92201733&MailNo=0" target="_blank" title="DeepLink - 公司介紹頁">DeepLink - 公司介紹頁</a>
+
+        <br>
+        <br>
+
+        <a href="https://www.1111.com.tw/MailLink/LinkT.asp?ajbl=A01_14_P01-9565124&Page=A01_14_P01&oNo=9565124&eNo=92201733&MailNo=0" target="_blank" title="DeepLink - 工作說明頁">DeepLink - 工作說明頁</a>
+
+    </body>
+</html>
