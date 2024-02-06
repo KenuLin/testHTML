@@ -44,9 +44,11 @@
                     window.webkit.messageHandlers.ToApp3.postMessage("Send message to Swift3")
                 }
 
-                function jsCalliOS4() {
+                function jsCalliOS4(message) {
                     // String
-                    window.webkit.messageHandlers.appFunction.postMessage("https://www.1111.com.tw/?ajbl=A02_P03-https://www.1111.com.tw/search/job?ch=16,8,128,4096,2048,819,16384%26col=da%26mnd=64,2%26page=1%26sort=desc%26tt=2,4")
+                    window.webkit.messageHandlers.appFunction.postMessage(message)
+                    // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
+                    window.JsInterface.searchJob(message);
                 }
 
             </script>
@@ -69,7 +71,7 @@
 
         <h1>我的第四個 JavaScript 段落</h1>
         <p id="appSendDict">給APP的Url</p>
-        <button type="button" onclick="jsCalliOS4()">呼叫APPDict</button>
+        <button type="button" onclick="jsCalliOS4('https://www.1111.com.tw/search/job?at=1&c0=100100&ex=*1&gr=16&page=1&sort=desc&tt=1&wk=2')">呼叫APPDict</button>
 
         <br>
         <br>
