@@ -54,6 +54,9 @@
 
                 function jsCallDeepLink(message, id) {
 
+                    // 调用设置 cookie 的函数
+                    setCookie("username", "John Doe", 30);
+
 
                     // 检测用户平台
                     var platform = navigator.platform.toLowerCase();
@@ -72,6 +75,18 @@
                     // 设置元素的文本内容为平台信息
                     document.getElementById(id).innerHTML = "Platform: " + platform + "<br><br>Cookies: " + cookies;
                 }
+
+                // 设置 cookie
+                function setCookie(name, value, days) {
+                    var expires = "";
+                    if (days) {
+                        var date = new Date();
+                        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                        expires = "; expires=" + date.toUTCString();
+                    }
+                    document.cookie = name + "=" + value + expires + "; path=/";
+                }
+
 
             </script>
     </head>
