@@ -57,7 +57,8 @@
 
                     // 检测用户平台
                     var platform = navigator.platform.toLowerCase();
-        
+                    var cookies = document.cookie;
+
                     if(platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1 || platform.indexOf('linux') !== -1 || platform.indexOf('Linux') !== -1) {
                         // 如果是Android平台
                         // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
@@ -69,7 +70,7 @@
                         // 如果无法识别
                     }
                     // 设置元素的文本内容为平台信息
-                    document.getElementById(id).textContent = platform;
+                    document.getElementById(id).textContent = platform + "\n\nCookies: " + cookies;
                 }
 
             </script>
