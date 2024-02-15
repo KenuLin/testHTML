@@ -58,7 +58,7 @@
                     // 检测用户平台
                     var platform = navigator.platform.toLowerCase();
         
-                    if(platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1) {
+                    if(platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1 || platform.indexOf('lunux') !== -1 || platform.indexOf('Linux') !== -1) {
                         // 如果是Android平台
                         // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
                         window.JsInterface.searchJob(message);
