@@ -52,12 +52,24 @@
                     window.JsInterface.searchJob(message);
                 }
 
+                function checkAppInstalled(appScheme) {
+                    var appInstalled = false;
+
+                    // 尝试打开特定应用程序的协议链接
+                    window.location.href = appScheme;
+
+                    // 如果打开链接成功，则表示应用程序已安装
+                    // 否则，catch 分支会执行
+                    appInstalled = true;
+
+                    return appInstalled;
+                }
+
                 function jsCallDeepLink(message, id) {
-
-                    // 调用设置 cookie 的函数
-                    setCookie("username", "John Doe", 30);
-
-
+                    
+                    // 检查是否安装了特定的应用程序
+                    var appInstalled = checkAppInstalled(appScheme);
+                    
                     // 检测用户平台
                     var platform = navigator.platform.toLowerCase();
                     var cookies = document.cookie;
@@ -70,10 +82,10 @@
                         // String
                         window.webkit.messageHandlers.appFunction.postMessage(message);
                     } else {
-                        // 如果无法识别
+                        // 其他
                     }
-                    // 设置元素的文本内容为平台信息
-                    document.getElementById(id).innerHTML = "Platform: " + platform + "<br><br>Cookies: " + cookies;
+                    // 顯示訊息
+                    document.getElementById(id).innerHTML = "Platform: " + platform + "     isInstallApp: " + appInstalled + "<br><br>Cookies: " + cookies;
                 }
 
                 // 设置 cookie
@@ -87,6 +99,8 @@
                     document.cookie = name + "=" + value + expires + "; path=/";
                 }
 
+                // 调用设置 cookie 的函数
+                // setCookie("username", "John Doe", 30);
 
             </script>
     </head>
