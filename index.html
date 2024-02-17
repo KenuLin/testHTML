@@ -65,6 +65,27 @@
                     return appInstalled;
                 }
 
+                function showInfo() {
+                    var platform = navigator.platform.toLowerCase();
+
+                    var cookies = document.cookie;
+
+                    var userAgent = navigator.userAgent
+                    
+                    var appInstalled = false;
+
+                    // 尝试打开特定应用程序的协议链接
+                    // window.location.href = appScheme;
+
+                    // 如果打开链接成功，则表示应用程序已安装
+                    // 否则，catch 分支会执行
+                    // appInstalled = true;
+                    // "     isInstallApp: " + appInstalled +
+
+                    // 顯示訊息
+                    document.getElementById('showInfo').innerHTML = "Platform: " + platform + "<br><br>Cookies: " + cookies + "<br><br>UserAgent: " + userAgent;
+                }
+
                 function jsCallDeepLink(message, id) {
                     
                     // 检查是否安装了特定的应用程序
@@ -110,7 +131,7 @@
         
         <h1>只是顯示資料</h1>
         <p id="showInfo">測試Label段落</p>
-        <button type="button" onclick="jsCallDeepLink('', 'showInfo')">呼叫APP職缺頁</button>
+        <button type="button" onclick="showInfo()">呼叫APP職缺頁</button>
         
         <h1>2024/02/15 新增跳職缺頁DeepLink2</h1>
         <p id="testDeepLinkJobDetail">測試Label段落</p>
