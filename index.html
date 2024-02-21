@@ -52,17 +52,29 @@
                     window.JsInterface.searchJob(message);
                 }
 
+
+                
+                
+
                 function checkAppInstalled(appScheme) {
-                    var appInstalled = false;
+                    // var appInstalled = false;
 
                     // 尝试打开特定应用程序的协议链接
-                    window.location.href = appScheme;
+                    // window.location.href = appScheme;
 
                     // 如果打开链接成功，则表示应用程序已安装
                     // 否则，catch 分支会执行
-                    appInstalled = true;
+                   // appInstalled = true;
 
-                    return appInstalled;
+
+                    var now = new Date().valueOf();
+                    setTimeout(function () {
+                        if (new Date().valueOf() - now > 100) return;
+                        window.location = "https://itunes.apple.com/tw/app/1111-zhao-gong-zuo/id805959101";
+                    }, 50);
+                    window.location = appScheme;
+                    
+                    // return appInstalled;
                 }
 
                 function showInfo() {
@@ -89,7 +101,7 @@
                 function jsCallDeepLink(message, id) {
                     
                     // 检查是否安装了特定的应用程序
-                    var appInstalled = checkAppInstalled("job1111://");
+                    var appInstalled = checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message);
                     
                     // 检测用户平台
                     var platform = navigator.platform.toLowerCase();
