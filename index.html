@@ -52,10 +52,6 @@
                     window.JsInterface.searchJob(message);
                 }
 
-
-                
-                
-
                 function checkAppInstalled(appScheme) {
                     // var appInstalled = false;
 
@@ -71,7 +67,7 @@
                     setTimeout(function () {
                         if (new Date().valueOf() - now > 100) return;
                         window.location = "https://itunes.apple.com/tw/app/1111-zhao-gong-zuo/id805959101";
-                    }, 25);
+                    }, 50);
                     window.location = appScheme;
                     
                     // return appInstalled;
@@ -99,24 +95,25 @@
                 }
 
                 function jsCallDeepLink(message, id) {
-                    
-                    // 检查是否安装了特定的应用程序
-                    var appInstalled = checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message);
-                    
+                                        
                     // 检测用户平台
                     var platform = navigator.platform.toLowerCase();
                     var cookies = document.cookie;
 
-                    if(platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1 || platform.indexOf('linux') !== -1 || platform.indexOf('Linux') !== -1) {
+                    // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
+                    if (platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1 || platform.indexOf('linux') !== -1 || platform.indexOf('Linux') !== -1) {
                         // 如果是Android平台
-                        // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
                         window.JsInterface.searchJob(message);
-                    } else if(platform.indexOf('iphone') !== -1 || platform.indexOf('ipad') !== -1 || platform.indexOf('ipod') !== -1) {
+                    } else if (platform.indexOf('iphone') !== -1 || platform.indexOf('ipad') !== -1 || platform.indexOf('ipod') !== -1) && (platform.indexOf('Mobile') !== -1){
                         // String
                         window.webkit.messageHandlers.appFunction.postMessage(message);
                     } else {
                         // 其他
+
                     }
+                    // 检查是否安装了特定的应用程序
+                    var appInstalled = checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message);
+
                     // 顯示訊息
                     document.getElementById(id).innerHTML = "Platform: " + platform + "     isInstallApp: " + appInstalled + "<br><br>Cookies: " + cookies;
                 }
@@ -135,6 +132,59 @@
                 // 调用设置 cookie 的函数
                 // setCookie("username", "John Doe", 30);
 
+
+                function turnToUrl(address) {
+                    let appLink = getAppDeepLink(address)
+
+                    if appLink !== -1 {
+                        // 跳轉APP
+                        checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message)
+
+                        // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
+                        if (platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1 || platform.indexOf('linux') !== -1 || platform.indexOf('Linux') !== -1) {
+                            // 如果是Android平台
+                            window.JsInterface.searchJob(message);
+                        } else if (platform.indexOf('iphone') !== -1 || platform.indexOf('ipad') !== -1 || platform.indexOf('ipod') !== -1) && (platform.indexOf('Mobile') !== -1){
+                            // String
+                            window.webkit.messageHandlers.appFunction.postMessage(message);
+                        } else {
+                            // 其他
+
+                        }
+
+                    } else {
+                        // 跳轉網頁
+                        window.location.href = address;
+                        
+                    }
+                }
+
+                function getAppDeepLink(webAddress) {
+                    if webAddress.indexOf('https://www.1111.com.tw/job/') !== -1 {
+                        // https://www.1111.com.tw/job/97527652/ 1111 Android工程師
+                        return check1111URL(webAddress, 'https://www.1111.com.tw/job/', 'A01_14_P01-')
+                    } else if webAddress.indexOf('https://www.1111.com.tw/corp/') !== -1 {
+                        // https://www.1111.com.tw/corp/1220177/ 1111公司
+                        return check1111URL(webAddress, 'https://www.1111.com.tw/corp/', 'A01_15_P01-')
+                    } else {
+                        return -1
+                    }
+                }
+
+                function check1111URL(webAddress, checkAddress, appLink) {
+                    if (webAddress.indexOf(checkAddress) !== -1) {
+                        var strs = webAddress.split(checkAddress);
+                        var linkT = ""
+                        for (i = 0; i < strs.length; i++) {
+  	                        if (strs[i] !== "") {
+    	                        linkT = strs[i].split('/')[0]
+                            }
+                        }
+	                    return appLink + linkT;
+                    }
+                    return -1
+                }
+                
             </script>
             <link rel="icon" type="image/png" href="rocket.png">
     </head>
@@ -169,6 +219,16 @@
         <h1>我的第四個 JavaScript 段落 - iOS</h1>
         <p id="appSendDict">給APP的Url</p>
         <button type="button" onclick="jsCalliOS4('A02_P03-https://www.1111.com.tw/search/job?ch=16,8,128,4096,2048,819,16384%26col=da%26mnd=64,2%26page=1%26sort=desc%26tt=2,4')">呼叫APPDict</button>
+
+        <h1>跳轉1111公司頁</h1>
+        <p id="showInfo1111Company">測試Label段落</p>
+        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/corp/1220177/')">跳轉1111公司頁</button>
+        
+
+        <h1>跳轉1111職缺頁</h1>
+        <p id="showInfo1111Position">測試Label段落</p>
+        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/job/97527652/')">跳轉1111職缺頁</button>
+        
 
         <br>
         <br>
