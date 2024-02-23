@@ -133,30 +133,40 @@
                 // setCookie("username", "John Doe", 30);
 
 
-                function turnToUrl(address) {
+                function turnToUrl(address, id) {
                     let appLink = getAppDeepLink(address)
 
+		    var resultText = appLink
+
+			
                     if appLink !== -1 {
                         // 跳轉APP
                         checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message)
 
+			    
                         // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
                         if (platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1 || platform.indexOf('linux') !== -1 || platform.indexOf('Linux') !== -1) {
                             // 如果是Android平台
                             window.JsInterface.searchJob(message);
+			    resultText += ' Android '
                         } else if (platform.indexOf('iphone') !== -1 || platform.indexOf('ipad') !== -1 || platform.indexOf('ipod') !== -1) && (platform.indexOf('Mobile') !== -1){
                             // String
                             window.webkit.messageHandlers.appFunction.postMessage(message);
+			    resultText += ' iOS '
                         } else {
                             // 其他
+			    resultText += ' other '
 
                         }
 
                     } else {
                         // 跳轉網頁
                         window.location.href = address;
+			    resultText += ' Web '
                         
                     }
+			document.getElementById(id).innerHTML = resultText;
+
                 }
 
                 function getAppDeepLink(webAddress) {
@@ -222,12 +232,12 @@
 
         <h1>跳轉1111公司頁</h1>
         <p id="showInfo1111Company">測試Label段落</p>
-        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/corp/1220177/')">跳轉1111公司頁</button>
+        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/corp/1220177/', 'showInfo1111Company')">跳轉1111公司頁</button>
         
 
         <h1>跳轉1111職缺頁</h1>
         <p id="showInfo1111Position">測試Label段落</p>
-        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/job/97527652/')">跳轉1111職缺頁</button>
+        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/job/97527652/', 'showInfo1111Position')">跳轉1111職缺頁</button>
         
 
         <br>
