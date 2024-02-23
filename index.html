@@ -138,7 +138,9 @@
 
 		    var resultText = appLink;
 
-			
+		    var platform = navigator.platform.toLowerCase();
+
+		
                     if (appLink !== -1) {
                         // 跳轉APP
                         // checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message)
@@ -149,7 +151,8 @@
                             // 如果是Android平台
                             window.JsInterface.searchJob(message);
 			    resultText += ' Android ';
-                        } else if (platform.indexOf('iphone') !== -1 || platform.indexOf('ipad') !== -1 || platform.indexOf('ipod') !== -1) && (platform.indexOf('Mobile') !== -1) {
+                        } else if (platform.indexOf('iphone') !== -1 || platform.indexOf('ipad') !== -1 || platform.indexOf('ipod') !== -1) {
+				// ?  && (platform.indexOf('Mobile') !== -1)
                             // String
                             window.webkit.messageHandlers.appFunction.postMessage(message);
 			    resultText += ' iOS ';
