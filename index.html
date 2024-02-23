@@ -170,29 +170,29 @@
                 }
 
                 function getAppDeepLink(webAddress) {
-                    if webAddress.indexOf('https://www.1111.com.tw/job/') !== -1 {
+                    if (webAddress.indexOf('https://www.1111.com.tw/job/') !== -1) {
                         // https://www.1111.com.tw/job/97527652/ 1111 Android工程師
-                        return check1111URL(webAddress, 'https://www.1111.com.tw/job/', 'A01_14_P01-')
-                    } else if webAddress.indexOf('https://www.1111.com.tw/corp/') !== -1 {
+                        return check1111URL(webAddress, 'https://www.1111.com.tw/job/', 'A01_14_P01-');
+                    } else if (webAddress.indexOf('https://www.1111.com.tw/corp/') !== -1) {
                         // https://www.1111.com.tw/corp/1220177/ 1111公司
-                        return check1111URL(webAddress, 'https://www.1111.com.tw/corp/', 'A01_15_P01-')
+                        return check1111URL(webAddress, 'https://www.1111.com.tw/corp/', 'A01_15_P01-');
                     } else {
-                        return -1
+                        return -1;
                     }
                 }
 
                 function check1111URL(webAddress, checkAddress, appLink) {
                     if (webAddress.indexOf(checkAddress) !== -1) {
                         var strs = webAddress.split(checkAddress);
-                        var linkT = ""
+                        var linkT = "";
                         for (i = 0; i < strs.length; i++) {
   	                        if (strs[i] !== "") {
-    	                        linkT = strs[i].split('/')[0]
+    	                        linkT = strs[i].split('/')[0];
                             }
                         }
 	                    return appLink + linkT;
                     }
-                    return -1
+                    return -1;
                 }
                 
             </script>
