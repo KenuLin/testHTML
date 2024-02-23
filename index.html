@@ -141,7 +141,7 @@
 			
                     if appLink !== -1 {
                         // 跳轉APP
-                        checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message)
+                        // checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message)
 
 			    
                         // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
@@ -162,10 +162,10 @@
                     } else {
                         // 跳轉網頁
                         window.location.href = address;
-			    resultText += ' Web '
+			resultText += ' Web '
                         
                     }
-			document.getElementById(id).innerHTML = resultText;
+		    document.getElementById(id).innerHTML = resultText;
 
                 }
 
