@@ -5,12 +5,15 @@
             {
                 "appID": "6GH2ZWT255.tw.com.1111.goodjobs2014",
                 "paths": [
-                    "*"
+                    "/*"
                 ]
             }
         ]
     },
    "webcredentials": {
-      "apps": [ "6GH2ZWT255.tw.com.1111.goodjobs2014" ]
+      "apps": [ "6GH2ZWT255.tw.com.1111.goodjobs2014" ],
+      "paths": [
+          "/*"
+      ]
    }
 }
