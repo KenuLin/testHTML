@@ -3,6 +3,15 @@
     <head>
         <meta charset="utf-8">
             <title>測試JavaScript</title>
+		<style>
+  #deepLinkBtn {
+    font-size: 2em;        /* 跟 h1 類似的文字大小 */
+    padding: 0.5em 1em;    /* 增加內距，讓按鈕更大 */
+    font-weight: bold;     /* 粗體 */
+    border-radius: 6px;    /* 圓角（可選） */
+  }
+</style>
+
 	    <script src="testViewModel.js" defer></script>
             <script>
                 // From App
@@ -234,40 +243,40 @@ function jsCallDeepLink(message, id) {
         
         <h1>只是顯示資料</h1>
         <p id="showInfo">測試Label段落</p>
-        <button type="button" onclick="showInfo()">呼叫APP職缺頁</button>
+        <button id="deepLinkBtn" type="button" onclick="showInfo()">呼叫APP職缺頁</button>
         
         <h1>2024/02/15 新增跳職缺頁DeepLink2</h1>
         <p id="testDeepLinkJobDetail">測試Label段落</p>
-        <button type="button" onclick="jsCallDeepLink('A01_14_P01-99086405', 'testDeepLinkJobDetail')">呼叫APP職缺頁</button>
+        <button id="deepLinkBtn" type="button" onclick="jsCallDeepLink('A01_14_P01-99086405', 'testDeepLinkJobDetail')">呼叫APP職缺頁</button>
         
         <h1>2024/02/15 新增跳公司頁DeepLink</h1>
         <p id="testDeepLinkCompanyDetail">測試Label段落</p>
-        <button type="button" onclick="jsCallDeepLink('A01_15_P01-1355006', 'testDeepLinkCompanyDetail')">呼叫APP公司頁</button>
+        <button id="deepLinkBtn" type="button" onclick="jsCallDeepLink('A01_15_P01-1355006', 'testDeepLinkCompanyDetail')">呼叫APP公司頁</button>
         
         <h1>我的第一個 JavaScript 段落</h1>
         <p id="testDemo">測試Label段落</p>
-        <button type="button" onclick="jsCalliOS1()">呼叫APP</button>
+        <button id="deepLinkBtn" type="button" onclick="jsCalliOS1()">呼叫APP</button>
         
         <h1>我的第二個 JavaScript 段落</h1>
         <p id="appSendString">來自APPString</p>
-        <button type="button" onclick="jsCalliOS2()">呼叫APPString</button>
+        <button id="deepLinkBtn" type="button" onclick="jsCalliOS2()">呼叫APPString</button>
 
         <h1>我的第三個 JavaScript 段落 - Android</h1>
         <p id="appSendDict">來自APPDict</p>
-        <button type="button" onclick="jsCalliOS3('A02_P03-https://www.1111.com.tw/search/job?ch=16,8,128,4096,2048,819,16384%26col=da%26mnd=64,2%26page=1%26sort=desc%26tt=2,4')">呼叫APPDict</button>
+        <button id="deepLinkBtn" type="button" onclick="jsCalliOS3('A02_P03-https://www.1111.com.tw/search/job?ch=16,8,128,4096,2048,819,16384%26col=da%26mnd=64,2%26page=1%26sort=desc%26tt=2,4')">呼叫APPDict</button>
 
         <h1>我的第四個 JavaScript 段落 - iOS</h1>
         <p id="appSendDict">給APP的Url</p>
-        <button type="button" onclick="jsCalliOS4('A02_P03-https://www.1111.com.tw/search/job?ch=16,8,128,4096,2048,819,16384%26col=da%26mnd=64,2%26page=1%26sort=desc%26tt=2,4')">呼叫APPDict</button>
+        <button id="deepLinkBtn" type="button" onclick="jsCalliOS4('A02_P03-https://www.1111.com.tw/search/job?ch=16,8,128,4096,2048,819,16384%26col=da%26mnd=64,2%26page=1%26sort=desc%26tt=2,4')">呼叫APPDict</button>
 
         <h1>跳轉1111公司頁</h1>
         <p id="showInfo1111Company">測試Label段落</p>
-        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/corp/1220177/', 'showInfo1111Company')">跳轉1111公司頁</button>
+        <button id="deepLinkBtn" type="button" onclick="turnToUrl('https://www.1111.com.tw/corp/1220177/', 'showInfo1111Company')">跳轉1111公司頁</button>
         
 
         <h1>跳轉1111職缺頁</h1>
         <p id="showInfo1111Position">測試Label段落</p>
-        <button type="button" onclick="turnToUrl('https://www.1111.com.tw/job/97527652/', 'showInfo1111Position')">跳轉1111職缺頁</button>
+        <button id="deepLinkBtn" type="button" onclick="turnToUrl('https://www.1111.com.tw/job/97527652/', 'showInfo1111Position')">跳轉1111職缺頁</button>
         
 
         <br>
