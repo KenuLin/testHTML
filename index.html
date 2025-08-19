@@ -95,29 +95,55 @@
                     document.getElementById('showInfo').innerHTML = "Platform: " + platform + "<br><br>Cookies: " + cookies + "<br><br>UserAgent: " + userAgent;
                 }
 
-                function jsCallDeepLink(message, id) {
-                                        
-                    // 检测用户平台
-                    var platform = navigator.platform.toLowerCase();
-                    var cookies = document.cookie;
+function jsCallDeepLink(message, id) {
+  var ua = navigator.userAgent || "";
+  var isAndroid = /Android/i.test(ua);
+  var isiOS = /iPhone|iPad|iPod/i.test(ua);
 
-                    // 使用 JavaScript 與 WebView 的介面橋接方法，並傳遞參數
-                    if (platform.indexOf('android') !== -1 || platform.indexOf('Android') !== -1 || platform.indexOf('linux') !== -1 || platform.indexOf('Linux') !== -1) {
-                        // 如果是Android平台
-                        window.JsInterface.searchJob(message);
-                    } else if (platform.indexOf('iphone') !== -1 || platform.indexOf('ipad') !== -1 || platform.indexOf('ipod') !== -1) && (platform.indexOf('Mobile') !== -1){
-                        // String
-                        window.webkit.messageHandlers.appFunction.postMessage(message);
-                    } else {
-                        // 其他
+  var cookies = document.cookie;
 
-                    }
-                    // 检查是否安装了特定的应用程序
-                    var appInstalled = checkAppInstalled("job1111://www.1111.com.tw/app?ajbl=" + message);
+  // 1) App 內的 WebView：優先走原生 bridge
+  // iOS App 內的 WKWebView
+  if (isiOS && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.appFunction) {
+    window.webkit.messageHandlers.appFunction.postMessage({
+      type: "openCompany",
+      payload: message
+    });
+    document.getElementById(id).innerHTML = "Platform: iOS WKWebView<br>Cookies: " + cookies;
+    return;
+  }
+  // Android App 內的 WebView
+  if (isAndroid && window.JsInterface && typeof window.JsInterface.searchJob === "function") {
+    window.JsInterface.searchJob(message);
+    document.getElementById(id).innerHTML = "Platform: Android WebView<br>Cookies: " + cookies;
+    return;
+  }
 
-                    // 顯示訊息
-                    document.getElementById(id).innerHTML = "Platform: " + platform + "     isInstallApp: " + appInstalled + "<br><br>Cookies: " + cookies;
-                }
+  // 2) 純瀏覽器：嘗試 URL Scheme（或 Universal Link）
+  var schemeUrl = "job1111://www.1111.com.tw/app?ajbl=" + encodeURIComponent(message);
+
+  // 建議：若你已配置 Universal Link，直接導向對應的 https://universal.link 路徑，
+  // iOS 會自動跳 App；未安裝則留在網頁。下面示範 Scheme + fallback 的作法。
+  var appStoreUrl = "https://apps.apple.com/app/idXXXXXXXXX";   // <— 換成你們的 App Store 連結
+  var playStoreUrl = "https://play.google.com/store/apps/details?id=com.xxx"; // <— 換成你們的 Play 連結
+  var fallback = isiOS ? appStoreUrl : (isAndroid ? playStoreUrl : "https://www.1111.com.tw/");
+
+  var start = Date.now();
+  // 必須由使用者點擊事件觸發（你現在是 onclick，OK）
+  window.location.href = schemeUrl;
+
+  // 若未安裝 App，跳轉不成功，過一小段時間導去商店或官網
+  setTimeout(function () {
+    // 大部分瀏覽器在成功開 App 時，頁面會被切走，這個 setTimeout 來不及觸發；
+    // 反之仍停留在頁面就視為失敗，做 fallback。
+    if (Date.now() - start < 1500) {
+      window.location.href = fallback;
+    }
+  }, 1200);
+
+  document.getElementById(id).innerHTML = "Platform: " + (isiOS ? "iOS" : (isAndroid ? "Android" : "Other")) + "<br>Cookies: " + cookies;
+}
+
 
                 // 设置 cookie
                 function setCookie(name, value, days) {
