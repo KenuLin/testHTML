@@ -1,0 +1,8 @@
+.deep-link-btn {
+    font-size: 2em;        /* 跟 h1 類似的文字大小 */
+    padding: 0.5em 1em;    /* 增加內距，讓按鈕更大 */
+    font-weight: bold;     /* 粗體 */
+    border-radius: 6px;    /* 圓角 */
+    cursor: pointer;       /* 滑鼠移上去顯示點擊指標 */
+  }
+  
