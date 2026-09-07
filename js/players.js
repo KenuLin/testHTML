@@ -92,7 +92,7 @@
 
             var left = document.createElement("span");
             left.className = "result-left";
-            left.appendChild(buildAvatar(p, 40));
+            left.appendChild(buildAvatar(p, 80));
 
             var text = document.createElement("span");
             text.className = "result-text";
@@ -161,7 +161,7 @@
 
         var header = document.createElement("div");
         header.className = "detail-header";
-        header.appendChild(buildAvatar(p, 64));
+        header.appendChild(buildAvatar(p, 128));
         var h2 = document.createElement("h2");
         h2.appendChild(bilingual(p.name, p.nameZh));
         header.appendChild(h2);
