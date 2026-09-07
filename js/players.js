@@ -162,9 +162,26 @@
         var header = document.createElement("div");
         header.className = "detail-header";
         header.appendChild(buildAvatar(p, 128));
+
+        var headerText = document.createElement("div");
+        headerText.className = "detail-header-text";
         var h2 = document.createElement("h2");
         h2.appendChild(bilingual(p.name, p.nameZh));
-        header.appendChild(h2);
+        headerText.appendChild(h2);
+
+        // Jumps to the schedule page pre-filtered to this player's national
+        // team — "旁邊多個賽程" — so from a player you can see when/against
+        // whom their team plays, without having to go find the team again
+        // on schedule.html.
+        if (p.nationalTeam) {
+            var scheduleLink = document.createElement("a");
+            scheduleLink.className = "schedule-link";
+            scheduleLink.href = "schedule.html?team=" + encodeURIComponent(p.nationalTeam.name);
+            scheduleLink.textContent = "📅 " + bilingualText(p.nationalTeam.name, p.nationalTeam.nameZh) + " 賽程";
+            headerText.appendChild(scheduleLink);
+        }
+
+        header.appendChild(headerText);
         content.appendChild(header);
 
         var grid = document.createElement("div");

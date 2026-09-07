@@ -267,9 +267,36 @@ h1 {
     font-size: 1.2rem;
 }
 
+.detail-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
 .detail-header h2 {
     font-size: 1.3rem;
     color: #222222;
+}
+
+.schedule-link {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.78rem;
+    color: #2e7d32;
+    background: #e8f5e9;
+    border: 1px solid #cfe8cf;
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    text-decoration: none;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.schedule-link:hover,
+.schedule-link:focus-visible {
+    background: #d9ecda;
 }
 
 .detail-grid {
