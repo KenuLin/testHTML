@@ -95,6 +95,7 @@
             left.appendChild(buildAvatar(p, 40));
 
             var text = document.createElement("span");
+            text.className = "result-text";
             var nameLine = document.createElement("div");
             nameLine.className = "result-name";
             nameLine.appendChild(bilingual(p.name, p.nameZh));

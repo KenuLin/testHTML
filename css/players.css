@@ -96,6 +96,18 @@ h1 {
     align-items: center;
     gap: 0.75rem;
     min-width: 0;
+    flex: 1 1 auto;
+}
+
+/* The name/club text block next to the avatar — without min-width:0 here,
+   a flex child's default min-width is "auto" (its content's natural width),
+   which silently defeats the .result-name/.result-sub white-space:nowrap +
+   text-overflow:ellipsis truncation below: on a narrow screen the long
+   "English Name（中文名）" text just overflows instead of truncating,
+   overlapping the club name in .result-right. */
+.result-text {
+    min-width: 0;
+    overflow: hidden;
 }
 
 .avatar {
@@ -228,6 +240,12 @@ h1 {
     border: 1px solid #eceff2;
     border-radius: 8px;
     padding: 0.75rem;
+    /* Grid items default to min-width:auto (their content's natural width),
+       which — same root cause as .result-text above — defeats any nowrap +
+       ellipsis truncation inside (e.g. a long league name) and lets it
+       overflow past the card's right edge instead of shrinking. */
+    min-width: 0;
+    overflow: hidden;
 }
 
 .detail-box .label {
