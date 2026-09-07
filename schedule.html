@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>賽程與轉播時間查詢</title>
+    <link rel="icon" type="image/png" href="images/rocket.png">
+    <link rel="stylesheet" href="css/players.css">
+    <link rel="stylesheet" href="css/schedule.css">
+    <script src="js/schedule.js" defer></script>
+</head>
+<body>
+
+    <main class="wrap wrap-wide">
+        <a href="index.html" class="back-link">← 返回首頁</a>
+        <h1>📅 2026 世界盃賽程查詢</h1>
+        <p id="subtitle" class="subtitle">載入資料中...</p>
+
+        <div class="tv-banner">
+            📺 台灣轉播：中華電信 MOD 愛爾達體育1-4台 / ELTA.tv（104 場完整轉播，另有 Hami Video）
+        </div>
+
+        <label class="team-select-label" for="team-select">選擇球隊查看賽程</label>
+        <select id="team-select" class="team-select">
+            <option value="">— 請選擇球隊 —</option>
+        </select>
+
+        <p id="empty-state" class="empty-state" hidden>查無這支球隊的賽程資料</p>
+
+        <ul id="match-list" class="match-list"></ul>
+    </main>
+
+</body>
+</html>
