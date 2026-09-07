@@ -298,6 +298,7 @@
         closeDetail();
         hideLeaguePreview();
         els.search.value = displayValue;
+        updateClearButtonVisibility();
         renderResults(players.filter(matcher));
         els.search.focus();
     }
@@ -374,8 +375,14 @@
             .slice(0, 30);
     }
 
+    /** Shows the ✕ button only once there's text to clear. */
+    function updateClearButtonVisibility() {
+        els.searchClear.hidden = els.search.value.length === 0;
+    }
+
     var debounceTimer = null;
     function onSearchInput() {
+        updateClearButtonVisibility();
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function () {
             if (!els.search.value.trim()) {
@@ -389,8 +396,21 @@
         }, 150);
     }
 
+    /** Clears the search box and restores the empty-state view (default
+        club-preview list), same as if the user had deleted the text by
+        hand — used by the ✕ button. */
+    function clearSearch() {
+        els.search.value = "";
+        updateClearButtonVisibility();
+        els.results.replaceChildren();
+        els.emptyState.hidden = true;
+        showLeaguePreviewIfBuilt();
+        els.search.focus();
+    }
+
     function init() {
         els.search = document.getElementById("search");
+        els.searchClear = document.getElementById("search-clear");
         els.results = document.getElementById("results");
         els.emptyState = document.getElementById("empty-state");
         els.subtitle = document.getElementById("subtitle");
@@ -402,6 +422,7 @@
         els.leaguePreviewList = document.getElementById("league-preview-list");
 
         els.search.addEventListener("input", onSearchInput);
+        els.searchClear.addEventListener("click", clearSearch);
         els.detailClose.addEventListener("click", closeDetail);
         els.detailOverlay.addEventListener("click", function (e) {
             if (e.target === els.detailOverlay) closeDetail();

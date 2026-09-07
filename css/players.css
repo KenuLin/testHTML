@@ -44,9 +44,15 @@ h1 {
     margin-bottom: 1.25rem;
 }
 
+.search-wrap {
+    position: relative;
+}
+
 .search-box {
     width: 100%;
-    padding: 0.85rem 1rem;
+    /* Extra right padding so typed text never runs under the clear (✕)
+       button that sits absolutely-positioned on top of it. */
+    padding: 0.85rem 2.4rem 0.85rem 1rem;
     font-size: 1rem;
     border: 1px solid #d8dde3;
     border-radius: 8px;
@@ -54,6 +60,42 @@ h1 {
 }
 .search-box:focus {
     border-color: #2e7d32;
+}
+
+/* Clear-text (✕) button shown inside the search box, right-aligned —
+   only visible once there's something to clear (toggled via the
+   `hidden` attribute in JS, not CSS, so it never steals a click when
+   the box is empty). */
+.search-clear {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    width: 1.75rem;
+    height: 1.75rem;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: #999999;
+    font-size: 0.9rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-clear:hover,
+.search-clear:focus-visible {
+    background: #eceff2;
+    color: #555555;
+}
+/* Author `display: flex` above otherwise beats the browser's own
+   `[hidden] { display: none }` rule at equal specificity (author
+   stylesheets always win ties over the user-agent sheet) — same issue
+   as .detail-overlay below, fixed the same way. Without this, toggling
+   `hidden` in JS stops actually hiding the button. */
+.search-clear[hidden] {
+    display: none;
 }
 
 .empty-state {
