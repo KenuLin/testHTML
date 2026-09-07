@@ -119,6 +119,29 @@
         });
     }
 
+    /**
+     * Renders a ".value" box that's clickable (a <button>) when `data` is
+     * present, or a plain "—" div when it isn't — used for the team/club
+     * boxes in the detail modal so tapping the team/club name jumps back to
+     * the results list filtered to just that team/club.
+     */
+    function valueElement(data, textFn, onClick) {
+        if (!data) {
+            var empty = document.createElement("div");
+            empty.className = "value";
+            empty.textContent = "—";
+            return empty;
+        }
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "value value-link";
+        btn.textContent = textFn(data);
+        btn.addEventListener("click", function () {
+            onClick(data);
+        });
+        return btn;
+    }
+
     function detailRow(label, value) {
         var row = document.createElement("div");
         row.className = "detail-row";
@@ -150,24 +173,48 @@
         var teamBox = document.createElement("div");
         teamBox.className = "detail-box";
         teamBox.innerHTML = '<div class="label">世界盃國家隊</div>';
-        var teamValue = document.createElement("div");
-        teamValue.className = "value";
-        teamValue.textContent = p.nationalTeam ? bilingualText(p.nationalTeam.name, p.nationalTeam.nameZh) : "—";
-        teamBox.appendChild(teamValue);
+        teamBox.appendChild(
+            valueElement(
+                p.nationalTeam,
+                function (t) {
+                    return bilingualText(t.name, t.nameZh);
+                },
+                function (t) {
+                    applyExactFilter(t.name, function (pl) {
+                        return pl.nationalTeam && pl.nationalTeam.name === t.name;
+                    });
+                }
+            )
+        );
         grid.appendChild(teamBox);
 
         var clubBox = document.createElement("div");
         clubBox.className = "detail-box";
         clubBox.innerHTML = '<div class="label">目前效力球隊</div>';
-        var clubValue = document.createElement("div");
-        clubValue.className = "value";
-        clubValue.textContent = p.club ? bilingualText(p.club.name, p.club.nameZh) : "—";
-        clubBox.appendChild(clubValue);
+        clubBox.appendChild(
+            valueElement(
+                p.club,
+                function (c) {
+                    return bilingualText(c.name, c.nameZh);
+                },
+                function (c) {
+                    applyExactFilter(c.name, function (pl) {
+                        return pl.club && pl.club.name === c.name;
+                    });
+                }
+            )
+        );
         if (p.club && p.club.league) {
-            var leagueLine = document.createElement("div");
-            leagueLine.className = "result-sub";
+            var leagueLine = document.createElement("button");
+            leagueLine.type = "button";
+            leagueLine.className = "result-sub value-link";
             leagueLine.style.marginTop = "0.25rem";
             leagueLine.textContent = bilingualText(p.club.league, p.club.leagueZh);
+            leagueLine.addEventListener("click", function () {
+                applyExactFilter(p.club.league, function (pl) {
+                    return pl.club && pl.club.league === p.club.league;
+                });
+            });
             clubBox.appendChild(leagueLine);
         }
         grid.appendChild(clubBox);
@@ -201,6 +248,21 @@
         els.detailOverlay.hidden = true;
     }
 
+    /**
+     * Used by the clickable team/club/league values in the detail modal:
+     * puts the clicked name in the search box (so it's clear what's being
+     * shown) and renders every matching player directly via `matcher` —
+     * unlike normal free-text search() this isn't capped at 30, since a
+     * league in particular can have well over 30 of this tournament's
+     * players in it.
+     */
+    function applyExactFilter(displayValue, matcher) {
+        closeDetail();
+        els.search.value = displayValue;
+        renderResults(players.filter(matcher));
+        els.search.focus();
+    }
+
     function search(query) {
         var q = query.trim().toLowerCase();
         if (!q) return [];
@@ -211,6 +273,8 @@
                     (p.nameZh && p.nameZh.includes(q)) ||
                     (p.club && p.club.name.toLowerCase().includes(q)) ||
                     (p.club && p.club.nameZh && p.club.nameZh.includes(q)) ||
+                    (p.club && p.club.league && p.club.league.toLowerCase().includes(q)) ||
+                    (p.club && p.club.leagueZh && p.club.leagueZh.includes(q)) ||
                     (p.nationalTeam && p.nationalTeam.name.toLowerCase().includes(q)) ||
                     (p.nationalTeam && p.nationalTeam.nameZh && p.nationalTeam.nameZh.includes(q))
                 );

@@ -262,6 +262,27 @@ h1 {
     color: #222222;
 }
 
+/* Team/club/league values that are clickable buttons (jump back to the
+   results list filtered to that value) — reset button chrome but leave
+   font-size/weight/color to whichever value class (.value or .result-sub)
+   is also applied, so it looks the same as the non-clickable "—" case. */
+.value-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    cursor: pointer;
+}
+.value-link:hover,
+.value-link:focus-visible {
+    color: #2e7d32;
+    text-decoration: underline;
+}
+
 .detail-rows {
     border-top: 1px solid #eceff2;
 }
