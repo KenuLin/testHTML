@@ -62,6 +62,38 @@ h1 {
     font-size: 0.9rem;
 }
 
+/* Default club list shown while the search box is empty. */
+.league-preview {
+    margin-top: 1rem;
+}
+
+.league-preview-title {
+    font-size: 0.8rem;
+    color: #999999;
+    margin-bottom: 0.5rem;
+}
+
+.chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.chip {
+    font: inherit;
+    font-size: 0.85rem;
+    color: #1b5e20;
+    background: #e8f5e9;
+    border: 1px solid #cfe8cf;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    cursor: pointer;
+}
+.chip:hover,
+.chip:focus-visible {
+    background: #d9ecda;
+}
+
 .results {
     list-style: none;
     margin-top: 1rem;
@@ -104,8 +136,13 @@ h1 {
    which silently defeats the .result-name/.result-sub white-space:nowrap +
    text-overflow:ellipsis truncation below: on a narrow screen the long
    "English Name（中文名）" text just overflows instead of truncating,
-   overlapping the club name in .result-right. */
+   overlapping the club name in .result-right.
+   flex-grow:1 gives it priority for the row's available space, since it's
+   the primary content — the avatar has a fixed size and .result-right (the
+   club name) is allowed to shrink/wrap instead, rather than this block
+   losing the fight and collapsing to 0 width. */
 .result-text {
+    flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
 }
@@ -149,11 +186,17 @@ h1 {
     text-overflow: ellipsis;
 }
 
+/* The club name on the right — deliberately shrinkable (unlike before) and
+   allowed to wrap onto a second line, so a long club name doesn't force
+   .result-text (the player's own name) down to 0 width on narrow screens. */
 .result-right {
     font-size: 0.8rem;
     color: #888888;
     text-align: right;
-    flex-shrink: 0;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 40%;
+    overflow-wrap: break-word;
 }
 
 .zh-name {

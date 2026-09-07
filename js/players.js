@@ -258,9 +258,63 @@
      */
     function applyExactFilter(displayValue, matcher) {
         closeDetail();
+        hideLeaguePreview();
         els.search.value = displayValue;
         renderResults(players.filter(matcher));
         els.search.focus();
+    }
+
+    /**
+     * Default club list shown below the search box while it's empty —
+     * clicking a club fills the search box with its name and filters the
+     * results to that club, same as clicking a club name in the detail
+     * modal.
+     */
+    var LEAGUE_PREVIEW_NAME = "Premier League";
+    var LEAGUE_PREVIEW_LABEL = "英超球隊";
+
+    function leaguePreviewClubs() {
+        var seen = {};
+        var list = [];
+        players.forEach(function (p) {
+            if (p.club && p.club.league === LEAGUE_PREVIEW_NAME && !seen[p.club.name]) {
+                seen[p.club.name] = true;
+                list.push(p.club);
+            }
+        });
+        list.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+        return list;
+    }
+
+    function renderLeaguePreview() {
+        var clubs = leaguePreviewClubs();
+        els.leaguePreviewTitle.textContent = LEAGUE_PREVIEW_LABEL;
+        els.leaguePreviewList.replaceChildren();
+        clubs.forEach(function (c) {
+            var chip = document.createElement("button");
+            chip.type = "button";
+            chip.className = "chip";
+            chip.textContent = bilingualText(c.name, c.nameZh);
+            chip.addEventListener("click", function () {
+                applyExactFilter(c.name, function (pl) {
+                    return pl.club && pl.club.name === c.name;
+                });
+            });
+            els.leaguePreviewList.appendChild(chip);
+        });
+        els.leaguePreview.hidden = clubs.length === 0;
+    }
+
+    function hideLeaguePreview() {
+        els.leaguePreview.hidden = true;
+    }
+
+    function showLeaguePreviewIfBuilt() {
+        if (els.leaguePreviewList.childElementCount > 0) {
+            els.leaguePreview.hidden = false;
+        }
     }
 
     function search(query) {
@@ -286,6 +340,13 @@
     function onSearchInput() {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function () {
+            if (!els.search.value.trim()) {
+                els.results.replaceChildren();
+                els.emptyState.hidden = true;
+                showLeaguePreviewIfBuilt();
+                return;
+            }
+            hideLeaguePreview();
             renderResults(search(els.search.value));
         }, 150);
     }
@@ -298,6 +359,9 @@
         els.detailOverlay = document.getElementById("detail-overlay");
         els.detailContent = document.getElementById("detail-content");
         els.detailClose = document.getElementById("detail-close");
+        els.leaguePreview = document.getElementById("league-preview");
+        els.leaguePreviewTitle = document.querySelector(".league-preview-title");
+        els.leaguePreviewList = document.getElementById("league-preview-list");
 
         els.search.addEventListener("input", onSearchInput);
         els.detailClose.addEventListener("click", closeDetail);
@@ -321,6 +385,7 @@
                     })
                 ).size;
                 els.subtitle.textContent = "目前收錄 " + teamCount + " 支 2026 世界盃國家隊，共 " + players.length + " 位球員。";
+                renderLeaguePreview();
             })
             .catch(function (err) {
                 els.subtitle.textContent = "資料載入失敗，請稍後再試。";
