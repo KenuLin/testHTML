@@ -14,6 +14,11 @@
     var DATA_URL = "data/players.json";
     var players = [];
 
+    // 有匯入完整賽程的五大歐洲聯賽（見 league-schedule.html / data/league-matches.json）——
+    // 只有球員的目前效力球隊剛好在這五個聯賽裡，detail modal 才會多顯示一個
+    // 「聯賽賽程」連結；其餘聯賽（如美職、沙特聯等）沒有賽程資料，不顯示連結。
+    var LEAGUE_SCHEDULE_LEAGUES = ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1"];
+
     var els = {};
 
     function initialsOf(name) {
@@ -179,6 +184,22 @@
             scheduleLink.href = "schedule.html?team=" + encodeURIComponent(p.nationalTeam.name);
             scheduleLink.textContent = "📅 " + bilingualText(p.nationalTeam.name, p.nationalTeam.nameZh) + " 賽程";
             headerText.appendChild(scheduleLink);
+        }
+
+        // Jumps to the club-league schedule page pre-filtered to this
+        // player's club — "我想要知道該球員接下來有在哪一個聯賽跟哪一個
+        // 時間踢球" — only shown when the club plays in one of the five
+        // leagues we have a full season fixture list for.
+        if (p.club && p.club.league && LEAGUE_SCHEDULE_LEAGUES.indexOf(p.club.league) !== -1) {
+            var leagueScheduleLink = document.createElement("a");
+            leagueScheduleLink.className = "schedule-link league-link";
+            leagueScheduleLink.href =
+                "league-schedule.html?league=" +
+                encodeURIComponent(p.club.league) +
+                "&team=" +
+                encodeURIComponent(p.club.name);
+            leagueScheduleLink.textContent = "📅 " + bilingualText(p.club.name, p.club.nameZh) + " 聯賽賽程";
+            headerText.appendChild(leagueScheduleLink);
         }
 
         header.appendChild(headerText);

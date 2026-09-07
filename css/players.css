@@ -299,6 +299,19 @@ h1 {
     background: #d9ecda;
 }
 
+/* League-schedule variant of .schedule-link (club's league fixtures, as
+   opposed to the green national-team one) — same shape, different colour
+   so the two links next to each other are easy to tell apart at a glance. */
+.schedule-link.league-link {
+    color: #1565c0;
+    background: #e3f0fc;
+    border-color: #c6e0f7;
+}
+.schedule-link.league-link:hover,
+.schedule-link.league-link:focus-visible {
+    background: #d3e7f9;
+}
+
 .detail-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

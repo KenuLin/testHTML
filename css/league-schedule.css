@@ -1,0 +1,54 @@
+/* League schedule page — extends the shared rules already defined in
+   css/players.css (.wrap, .back-link, .subtitle, .empty-state) and
+   css/schedule.css (.wrap-wide, .tv-banner, .team-select*, .match-list,
+   .match-card, .match-teams, .match-score, .match-meta, .stage-badge);
+   this file only holds what's specific to the two-select + toggle layout
+   on this page. */
+
+.league-team-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.league-team-row .field {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.team-select:disabled {
+    background: #f4f6f9;
+    color: #999999;
+    cursor: not-allowed;
+}
+
+.future-only-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    color: #666666;
+    margin-bottom: 1.1rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.future-only-label input {
+    width: 16px;
+    height: 16px;
+    accent-color: #2e7d32;
+}
+
+.match-date {
+    font-size: 0.78rem;
+    color: #888888;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 480px) {
+    .league-team-row {
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+}
