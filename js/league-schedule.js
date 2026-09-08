@@ -1,14 +1,18 @@
-// 五大聯賽（英超/西甲/德甲/義甲/法甲）賽程與轉播查詢頁 — 純前端、無後端，
-// 做法跟 schedule.js（世界盃賽程）一樣：build 時（在 Football 專案跑
-// npm run crawl:league-fixtures + npm run export:static）把整季賽程匯出成
-// data/league-matches.json，這頁載入一次後在瀏覽器端做篩選。
+// 歐洲賽事賽程與轉播查詢頁 — 五大聯賽（英超/西甲/德甲/義甲/法甲）+ 歐冠 +
+// 歐國聯，純前端、無後端，做法跟 schedule.js（世界盃賽程）一樣：build 時
+// （在 Football 專案跑 npm run crawl:league-fixtures + npm run export:static）
+// 把整季賽程匯出成 data/league-matches.json，這頁載入一次後在瀏覽器端做篩選。
 //
-// 跟世界盃賽程不同的地方：這是俱樂部聯賽，賽季還在進行中，所以預設只顯示
-// 「尚未開踢」的未來場次（比對 kickoffUtc 跟現在時間），符合使用者的原始
-// 需求「在未來哪一天我可以看直播」；使用者可以取消勾選來看已賽場次的比分。
+// 跟世界盃賽程不同的地方：這些賽事賽季都還在進行中，所以預設只顯示「尚未
+// 開踢」的未來場次（比對 kickoffUtc 跟現在時間），符合使用者的原始需求
+// 「在未來哪一天我可以看直播」；使用者可以取消勾選來看已賽場次的比分。
 //
-// 台灣轉播權每季可能會變動 — 西甲是 DAZN Taiwan 獨家，其餘四個聯賽走
-// ELTA.tv（部分場次 MOD／Hami Video 同步），資料在 export-static.ts 的
+// 歐冠是俱樂部賽事（球隊＝球會），歐國聯是國家隊賽事（球隊＝國家）——這頁
+// 不需要知道兩者的差別，homeTeam/awayTeam 都是同一種 {name, nameZh} 形狀，
+// 差別只在 export-static.ts 匯出時去哪張表找中文譯名。
+//
+// 台灣轉播權每季可能會變動 — 西甲是 DAZN Taiwan 獨家，其餘賽事走 ELTA.tv
+// （部分場次 MOD／Hami Video 同步），資料在 export-static.ts 的
 // LEAGUE_TV_NOTES 裡維護，這裡只是原樣顯示。
 
 (function () {
@@ -23,8 +27,18 @@
         Bundesliga: "德甲",
         "Serie A": "義甲",
         "Ligue 1": "法甲",
+        "UEFA Champions League": "歐冠",
+        "UEFA Nations League": "歐國聯",
     };
-    var LEAGUE_ORDER = ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1"];
+    var LEAGUE_ORDER = [
+        "Premier League",
+        "La Liga",
+        "Bundesliga",
+        "Serie A",
+        "Ligue 1",
+        "UEFA Champions League",
+        "UEFA Nations League",
+    ];
 
     var els = {};
 
@@ -245,7 +259,7 @@
             .then(function (data) {
                 allMatches = data;
                 els.subtitle.textContent =
-                    "共收錄五大聯賽 " + allMatches.length + " 場賽事，選擇聯賽與球隊查看賽程、比分與轉播資訊。";
+                    "共收錄 " + leaguesPresent().length + " 項賽事、" + allMatches.length + " 場比賽，選擇賽事與球隊查看賽程、比分與轉播資訊。";
                 populateLeagueSelect();
 
                 var params = new URLSearchParams(window.location.search);
