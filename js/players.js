@@ -107,8 +107,11 @@
             var subLine = document.createElement("div");
             subLine.className = "result-sub";
             subLine.textContent =
-                (p.nationalTeam ? bilingualText(p.nationalTeam.name, p.nationalTeam.nameZh) : "—") +
-                (p.position ? " · " + p.position : "");
+                (p.nationalTeam
+                    ? bilingualText(p.nationalTeam.name, p.nationalTeam.nameZh)
+                    : p.nationality
+                    ? bilingualText(p.nationality, p.nationalityZh)
+                    : "—") + (p.position ? " · " + p.position : "");
             text.appendChild(nameLine);
             text.appendChild(subLine);
             left.appendChild(text);
@@ -208,22 +211,36 @@
         var grid = document.createElement("div");
         grid.className = "detail-grid";
 
+        // 有世界盃國家隊資料就顯示國家隊（可點擊篩選）；沒有世界盃資料、但有
+        // 從所屬球會陣容頁抓到國籍的（例如未入選世界盃的球員），退而顯示純
+        // 文字國籍 —— 標籤也跟著換成「國籍」，避免誤導成有入選世界盃。
         var teamBox = document.createElement("div");
         teamBox.className = "detail-box";
-        teamBox.innerHTML = '<div class="label">世界盃國家隊</div>';
-        teamBox.appendChild(
-            valueElement(
-                p.nationalTeam,
-                function (t) {
-                    return bilingualText(t.name, t.nameZh);
-                },
-                function (t) {
-                    applyExactFilter(t.name, function (pl) {
-                        return pl.nationalTeam && pl.nationalTeam.name === t.name;
-                    });
-                }
-            )
-        );
+        if (p.nationalTeam) {
+            teamBox.innerHTML = '<div class="label">世界盃國家隊</div>';
+            teamBox.appendChild(
+                valueElement(
+                    p.nationalTeam,
+                    function (t) {
+                        return bilingualText(t.name, t.nameZh);
+                    },
+                    function (t) {
+                        applyExactFilter(t.name, function (pl) {
+                            return pl.nationalTeam && pl.nationalTeam.name === t.name;
+                        });
+                    }
+                )
+            );
+        } else if (p.nationality) {
+            teamBox.innerHTML = '<div class="label">國籍</div>';
+            var nationalityDiv = document.createElement("div");
+            nationalityDiv.className = "value";
+            nationalityDiv.textContent = bilingualText(p.nationality, p.nationalityZh);
+            teamBox.appendChild(nationalityDiv);
+        } else {
+            teamBox.innerHTML = '<div class="label">世界盃國家隊</div>';
+            teamBox.appendChild(valueElement(null, function () {}, function () {}));
+        }
         grid.appendChild(teamBox);
 
         var clubBox = document.createElement("div");
@@ -369,7 +386,9 @@
                     (p.club && p.club.league && p.club.league.toLowerCase().includes(q)) ||
                     (p.club && p.club.leagueZh && p.club.leagueZh.includes(q)) ||
                     (p.nationalTeam && p.nationalTeam.name.toLowerCase().includes(q)) ||
-                    (p.nationalTeam && p.nationalTeam.nameZh && p.nationalTeam.nameZh.includes(q))
+                    (p.nationalTeam && p.nationalTeam.nameZh && p.nationalTeam.nameZh.includes(q)) ||
+                    (p.nationality && p.nationality.toLowerCase().includes(q)) ||
+                    (p.nationalityZh && p.nationalityZh.includes(q))
                 );
             })
             .slice(0, 30);
@@ -439,9 +458,11 @@
             .then(function (data) {
                 players = data;
                 var teamCount = new Set(
-                    players.map(function (p) {
-                        return p.nationalTeam && p.nationalTeam.name;
-                    })
+                    players
+                        .map(function (p) {
+                            return p.nationalTeam && p.nationalTeam.name;
+                        })
+                        .filter(Boolean)
                 ).size;
                 els.subtitle.textContent = "目前收錄 " + teamCount + " 支 2026 世界盃國家隊，共 " + players.length + " 位球員。";
                 renderLeaguePreview();
