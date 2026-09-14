@@ -5,4 +5,17 @@
     border-radius: 6px;    /* 圓角 */
     cursor: pointer;       /* 滑鼠移上去顯示點擊指標 */
   }
-  
+
+.back-link {
+    display: inline-block;
+    padding: 0.75rem 0.25rem;
+    font-size: 1rem;
+    color: #555555;
+    text-decoration: none;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+    color: #1b5e20;
+    text-decoration: underline;
+}
